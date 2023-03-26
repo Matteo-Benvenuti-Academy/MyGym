@@ -1,4 +1,4 @@
 # MyGym
 
-Progetto di matteo benvenuti e Valerio Lucarelli
+Progetto di Matteo Benvenuti e Valerio Lucarelli
 
