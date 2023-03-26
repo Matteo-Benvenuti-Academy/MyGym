@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+		integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+	<title>MyGym</title>
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+		<a class="navbar-brand" th:href="@{/MyGym/user/info}">Profile</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav">
+
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/MyGym/user/myCourses}">My Courses</a>
+				</li>
+
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/MyGym/user/allCourses}">All Courses</a>
+				</li>
+
+				<!-- Admin -->
+				<span th:if="${user.isAdmin}">	
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/MyGym/admin/courses/remove}">Remove Courses</a>
+					</li>
+                </span>
+				<span th:if="${user.isAdmin}">	
+					<li  class="nav-item">
+						<a class="nav-link" th:href="@{/MyGym/admin/course/add}">Remove Courses</a>
+					</li>
+            	</span>
+			
+			</ul>
+		</div>
+	</nav>
+
+	<div class="container mt-3">
+
+		<div class="card w-100">
+			<div class="card-body">
+
+				<h5 class="card-title" th:text="${'Course Name: ' + course.name}"></h5>
+
+				<ul class="list-group list-group-flush">
+
+					<li class="list-group-item" th:text="'Date: ' + ${course.date}"></li>
+
+
+					<li class="list-group-item"
+						th:with="days=${course.minutesLength / (60 * 24)}, hours=${(course.minutesLength - (days * 60 * 24)) / ( 60)}"
+						th:text="'Length: ' + ${hours} + ' hours' "></li>
+
+					<li class="list-group-item" th:text="'Level: ' + ${course.level}"></li>
+
+					<li class="list-group-item"
+						th:text="'Places Left: ' + ${course.maxUsers - #lists.size(course.users)}"></li>
+				</ul>
+
+				<form method="POST" th:action="@{/MyGym/course/unsubscribe}" th:object="${course}">
+
+					<input type="text" th:field="*{uniqueCode}" class="d-none" readonly />
+
+					<button type="submit" class="btn btn-danger">
+						<i class="fa fa-solid fa-trash"></i> unsubscribe
+					</button>
+				</form>
+
+			</div>
+		</div>
+
+	</div>
+
+
+</body>
+
+</html>

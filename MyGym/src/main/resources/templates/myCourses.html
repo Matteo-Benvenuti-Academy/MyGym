@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <title>MyGym</title>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+	  
+		<a class="navbar-brand" th:href="@{/MyGym/user/info}">Profile</a>
+	  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+	    	<span class="navbar-toggler-icon"></span>
+	  	</button>
+	  	
+		<div class="collapse navbar-collapse" id="navbarNav">
+	    	<ul class="navbar-nav">
+	      		
+				<li class="nav-item">
+	        		<a class="nav-link">My Courses</a>
+	      		</li>
+
+	      		<li class="nav-item">
+	        		<a class="nav-link" th:href="@{/MyGym/user/allCourses}">All Courses</a>
+	      		</li>
+
+				<!-- Admin -->
+				<span th:if="${user.isAdmin}">	
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/MyGym/admin/courses/remove}">Remove Courses</a>
+					</li>
+                </span>
+				
+				<span th:if="${user.isAdmin}">	
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/MyGym/admin/course/add}">Add Courses</a>
+				</li>
+				</span>
+
+			</ul>
+	  	</div>
+    </nav>
+
+	<div>
+		<h3>Manage Your Courses<h3>
+	<div>
+
+
+    <div class="container mt-3">
+
+        <table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Course</th>
+					<th>Date</th>
+					<th>Level</th>
+					<th>Length</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="course: ${Courses}">
+				    <td th:text="${course.name}"></td>
+					<td th:text="${#temporals.format(course.date,'dd-MM-yyyy HH:mm')}"></td>
+					<td th:text="${course.level}"></td>
+					<td th:text="${course.minutesLength}"></td>	
+					
+					<td>
+						<!-- NON Funiona, Dovrebbe tornare il codice univoco del corso corrispondente
+							invece ritorna una concatenazione di tutti i codici univoci separati da una virgola
+						-->
+						<!-- <form method="POST" th:action="@{/MyGym/course/info}" th:object="${SelectedCourse}">
+							<input type="text" th:value="${course.uniqueCode}" id="uniqueCode" name = "uniqueCode"class="d-none" readonly/>
+							<button class="btn btn-outline-primary text-primary" type="submit">
+								<i class="fa fa-search-plus"></i>
+							</button>
+						<form> -->
+
+						<a class="btn btn-outline-primary text-primary"  th:href="@{/MyGym/course/} + ${course.uniqueCode}">
+							<i class="fa fa-search-plus"></i>
+						</a>	
+					</td>			
+
+                
+				</tr>
+			</tbody>
+		</table>
+
+    </div>
+</body>
+</html>
